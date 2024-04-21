@@ -1,6 +1,7 @@
 import React from 'react';
 import { HeroTitle } from './HeroTitle';
 import Image from 'next/image';
+import { Separator } from '@radix-ui/themes';
 
 interface titleProps {
   hero: {
@@ -21,13 +22,16 @@ interface titleProps {
 export const HeroSection = (props: titleProps) => {
   const image = props.hero.image;
   return (
-    <div className="flex">
-      <div className="w-[50%]">
-        <HeroTitle heroTitle={props.hero.heroTitle} />
+    <>
+      <div className="flex">
+        <div className="w-[50%]">
+          <HeroTitle heroTitle={props.hero.heroTitle} />
+        </div>
+        <div className="w-[50%]">
+          <Image src={image.src} alt={image.alt} height={image.height} width={image.width} />
+        </div>
       </div>
-      <div className="w-[50%]">
-        <Image src={image.src} alt={image.alt} height={image.height} width={image.width} />
-      </div>
-    </div>
+      <Separator my="3" size="4" />
+    </>
   );
 };
