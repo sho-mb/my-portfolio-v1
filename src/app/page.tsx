@@ -26,7 +26,7 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="mt-20">
+      <div className="my-10">
         <SectionTittle title="Portfolio" subtile="Here is latest portfolio" />
         <Portfolio />
       </div>

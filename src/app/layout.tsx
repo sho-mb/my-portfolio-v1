@@ -4,6 +4,7 @@ import { roboto } from './ui/fonts';
 import { Header } from './ui/common/Header';
 import '@radix-ui/themes/styles.css';
 import { Container, Theme } from '@radix-ui/themes';
+import { Footer } from './ui/common/Footer';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,6 +23,7 @@ export default function RootLayout({
           <Container size={'3'}>
             <Header></Header>
             {children}
+            <Footer></Footer>
           </Container>
         </Theme>
       </body>
