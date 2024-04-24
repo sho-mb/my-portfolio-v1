@@ -1,4 +1,4 @@
-export const portfolios = [
+export const portfoliosLatest = [
   {
     image: {
       src: '/assets/portfolio/185.png',

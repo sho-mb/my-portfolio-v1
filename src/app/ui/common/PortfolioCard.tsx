@@ -31,8 +31,8 @@ export const PortfolioCard = (props: CardProps) => {
             height={image.height}
           />
         </Inset>
-        <Text as="p" size="2">
-          <h3 className="mb-1 font-bold">{portfolio.title}</h3>
+        <Text as="div" size="2">
+          <p className="mb-1 font-bold">{portfolio.title}</p>
           <p>{portfolio.content}</p>
         </Text>
       </Card>

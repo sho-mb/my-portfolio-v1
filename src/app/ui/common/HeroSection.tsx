@@ -8,7 +8,14 @@ interface titleProps {
     heroTitle: {
       section: string;
       content: string;
-      subContent: string;
+      subContent?: string;
+      snsIcons?: {
+        src: string;
+        alt: string;
+        width: number;
+        height: number;
+        href: string;
+      }[];
     };
     image: {
       src: string;

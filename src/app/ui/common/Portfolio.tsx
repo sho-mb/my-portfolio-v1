@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import { PortfolioCard } from './PortfolioCard';
 
@@ -18,9 +17,9 @@ interface portfoliosProps {
 }
 
 export const Portfolio = (props: portfoliosProps) => {
-  const portfolios = props.portfolios;
+  const portfolios = props.portfolios || [];
   return (
-    <div className="flex gap-20">
+    <div className="flex gap-4 flex-wrap">
       {portfolios.map((portfolio) => {
         return (
           <PortfolioCard

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { andada } from './ui/fonts';
 import { SectionTittle } from './ui/common/SectionTittle';
 import { Portfolio } from './ui/common/Portfolio';
+import { portfoliosLatest } from './lib/portfolios';
 
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
         <div className="mb-10">
           <SectionTittle title="Portfolio" subtile="Here is latest portfolio" />
         </div>
-        <Portfolio />
+        <Portfolio portfolios={portfoliosLatest} />
       </div>
     </main>
   );

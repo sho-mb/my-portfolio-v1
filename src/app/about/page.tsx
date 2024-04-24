@@ -7,7 +7,7 @@ import { Button, Separator } from '@radix-ui/themes';
 import Image from 'next/image';
 import { Portfolio } from '../ui/common/Portfolio';
 import Link from 'next/link';
-import { portfolios } from '../lib/portfolios';
+import { portfoliosLatest } from '../lib/portfolios';
 
 export default function page() {
   return (
@@ -81,7 +81,7 @@ export default function page() {
             subtile={sectionTitles.portfolio.subTitle}
           />
         </div>
-        <Portfolio portfolios={portfolios} />
+        <Portfolio portfolios={portfoliosLatest} />
         <Separator my="3" size="4" />
       </section>
       <section className="my-20 text-center">
