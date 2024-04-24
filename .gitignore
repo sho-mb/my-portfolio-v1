@@ -27,7 +27,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.next.config.mjs
 
 # vercel
 .vercel
@@ -39,3 +38,6 @@ next-env.d.ts
 # Ignore artifacts:
 build
 coverage
+
+# Ignore next.config.mjs
+next.config.mjs
