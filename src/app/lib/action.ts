@@ -1,22 +1,13 @@
 'use server'
 import { z } from "zod"
 import { createTransporter } from "./utils/tranporter";
+import { State } from "../types/state";
 
 const schema = z.object({
   name: z.string().min(1, {message: "Please enter your name"}),
   email: z.string().email({ message: 'please enter correct email'}),
   message: z.string().min(10, {message: 'Please enter your message at least 10 characters'})
 })
-
-export type State = {
-  errors?: {
-    name?: string[];
-    email?: string[];
-    message?: string[];
-  };
-  message?: string;
-  isSuccess: boolean;
-};
 
 export async function sendEmail (state: State, formData: FormData) : Promise<State>  {
   const validatedFields = schema.safeParse({

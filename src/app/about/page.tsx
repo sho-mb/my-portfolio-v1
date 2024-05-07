@@ -81,7 +81,7 @@ export default function page() {
             subtile={sectionTitles.portfolio.subTitle}
           />
         </div>
-        <Portfolio portfolios={portfoliosLatest} />
+        <Portfolio numberOfPortfolio={3} />
         <Separator my="3" size="4" />
       </section>
       <section className="my-20 text-center">

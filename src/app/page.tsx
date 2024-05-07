@@ -31,7 +31,7 @@ export default function Home() {
         <div className="mb-10">
           <SectionTittle title="Portfolio" subtile="Here is latest portfolio" />
         </div>
-        <Portfolio portfolios={portfoliosLatest} />
+        <Portfolio numberOfPortfolio={3} />
       </div>
     </main>
   );
