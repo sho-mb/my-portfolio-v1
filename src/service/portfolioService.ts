@@ -6,7 +6,7 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
   try {
     const res = await prisma.portfolio.findMany();
     const portfolios: PortfoliosProps[] = [];
-    if (res) {
+    if (res) {      
       res.forEach((item) => { 
         const portfolio: PortfoliosProps = {
           image: {
@@ -16,6 +16,7 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
             height: item.height
           },
           portfolio: {
+            id: item.id,
             title: item.title,
             content: item.content
           }
@@ -30,14 +31,15 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
   }
 }
 
-// export const createNewPortfolio = async (sharedLink: string, title: string, content: string ) => {
-//   const portfolio =  await prisma.portfolio.create({
-//     data: {
-//       alt: 'portfolio',
-//       title: title,
-//       content: content,
-//       url: sharedLink,
-//     },
-//     in
-//   })
-// }
+export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number ) => {
+  await prisma.portfolio.create({
+    data: {
+      alt: `portfolio ${title}'s image`,
+      title: title,
+      content: content,
+      url: sharedLink,
+      height: height,
+      width: width,
+    },
+  })
+}

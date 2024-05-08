@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { State } from "../types/state";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 import { createNewPortfolio } from "@/service/portfolioService";
+import { getImageSizeFromFile } from "./utils/imageConverter";
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
 const MAX_IMAGE_SIZE = 5; // 5MB
@@ -32,7 +33,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing fields, Failed to upload portfolio',
+      message: JSON.parse(JSON.stringify('Missing fields, Failed to upload portfolio')),
       isSuccess: false,
     }
   }
@@ -42,40 +43,39 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   const month = ('0' + (now.getMonth() + 1)).slice(-2); 
   const day = ('0' + now.getDate()).slice(-2); 
   const YYMMDD = year + month + day;
-
   const { file, title, content } = validatedFields.data;
-  console.log(file)
-
   const filename = `${YYMMDD}_${file.name}`  
-
   const newFormData = new FormData()
   newFormData.append('file', file);
 
-  const response = await fetch(
-    `/api/dropbox?filename=${filename}`,
-    {
-      method: 'POST',
-      body: newFormData,
+  try {
+    const size = await getImageSizeFromFile(file);
+    const response = await fetch(
+      `/api/dropbox?filename=${filename}`,
+      {
+        method: 'POST',
+        body: newFormData,
+      }
+    );
+    
+    if (response.ok) {
+      const data = await response.json();
+      const sharedLink = data.sharedLink;
+      await createNewPortfolio(sharedLink, title, content, size.height, size.width)
+      redirect('/admin/dashboard', RedirectType.push)
+    } else {
+      return {
+        message: JSON.parse(JSON.stringify( `Failed to upload portfolio:', ${response.statusText}`)),
+        errors: {},
+        isSuccess: false,
+      }
+    }  
+  } catch (error) {
+    console.log(error)
+    return {
+      message: JSON.parse(JSON.stringify( `'Error occurred:', ${error}`)),
+      errors: {},
+      isSuccess: false,
     }
-  );
-
-  return {
-    message: '',
-    errors: {},
-    isSuccess: false,
-  }
-  
-  // if (response.ok) {
-  //   const data = await response.json();
-  //   const sharedLink = data.sharedLink;
-  //   const res = await createNewPortfolio(sharedLink, title, content)
-  //   console.log(res)
-  //   redirect('/admin/dashboard')
-  // } else {
-  //   return {
-  //     errors: {},
-  //     message: `Failed to upload portfolio:', ${response.statusText}`,
-  //     isSuccess: false,
-  //   }
-  // }
+  } 
 }

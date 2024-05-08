@@ -14,6 +14,8 @@ model Portfolio {
   content String
   url     String
   alt     String
+  height  Int
+  width   Int
 }
 
 model user {

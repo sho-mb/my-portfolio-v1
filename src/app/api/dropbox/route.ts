@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const fileName = request.nextUrl.searchParams.get('filename')!;
-
     const buf = await file.arrayBuffer();
 
     const uploadResponse = await dbx.filesUpload({ path: `/${fileName}`, contents: buf });

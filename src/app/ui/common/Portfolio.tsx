@@ -11,21 +11,27 @@ export const Portfolio = async (props: PortfolioProps) => {
     console.error('Error fetching portfolios:', err);
   });
 
-  if (props.numberOfPortfolio) {
-    portfolios?.slice(0, props.numberOfPortfolio);
-  }
-
   return (
     <div className="flex gap-4 flex-wrap">
-      {portfolios?.map((portfolio) => {
-        return (
-          <PortfolioCard
-            key={portfolio.portfolio.title}
-            image={portfolio.image}
-            portfolio={portfolio.portfolio}
-          />
-        );
-      })}
+      {props.numberOfPortfolio
+        ? portfolios?.slice(0, props.numberOfPortfolio).map((portfolio) => {
+            return (
+              <PortfolioCard
+                key={portfolio.portfolio.title}
+                image={portfolio.image}
+                portfolio={portfolio.portfolio}
+              />
+            );
+          })
+        : portfolios?.map((portfolio) => {
+            return (
+              <PortfolioCard
+                key={portfolio.portfolio.title}
+                image={portfolio.image}
+                portfolio={portfolio.portfolio}
+              />
+            );
+          })}
     </div>
   );
 };

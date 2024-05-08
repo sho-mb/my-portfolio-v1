@@ -5,6 +5,8 @@ CREATE TABLE "Portfolio" (
     "content" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "alt" TEXT NOT NULL,
+    "height" INTEGER NOT NULL,
+    "width" INTEGER NOT NULL,
 
     CONSTRAINT "Portfolio_pkey" PRIMARY KEY ("id")
 );

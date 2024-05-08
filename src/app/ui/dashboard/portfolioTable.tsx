@@ -1,5 +1,6 @@
 import { getPortfolios } from '@/service/portfolioService';
 import { Table } from '@radix-ui/themes';
+import Link from 'next/link';
 
 export const PortfolioTable = async () => {
   const portfolios = await getPortfolios().catch((err) => {
@@ -22,7 +23,9 @@ export const PortfolioTable = async () => {
             <Table.Row key={portfolio.image.src}>
               <Table.RowHeaderCell>{portfolio.portfolio.title}</Table.RowHeaderCell>
               <Table.Cell>{portfolio.portfolio.content}</Table.Cell>
-              <Table.Cell>{portfolio.image.src}</Table.Cell>
+              <Table.Cell>
+                <Link href={portfolio.image.src}>This</Link>
+              </Table.Cell>
             </Table.Row>
           );
         })}

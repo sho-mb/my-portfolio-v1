@@ -5,7 +5,6 @@ import { useFormState } from 'react-dom';
 import { Dialog } from '../contact/Dialog';
 import uploadPortfolio from '@/app/lib/portfolioFormAction';
 import { State } from '@/app/types/state';
-import Image from 'next/image';
 
 const initialState: State = {
   errors: {},
@@ -48,7 +47,6 @@ export const PortfolioForm = () => {
           <SubmitButton />
         </div>
       </div>
-      <Image alt="" src={formState.message!} height={300} width={300} />
     </form>
   );
 };
