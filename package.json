@@ -22,6 +22,7 @@
     "fs": "^0.0.1-security",
     "googleapis": "^134.0.0",
     "jose": "^5.2.4",
+    "libvips": "^0.0.2",
     "next": "^14.3.0-canary.44",
     "nodemailer": "^6.9.13",
     "prisma": "^5.13.0",
