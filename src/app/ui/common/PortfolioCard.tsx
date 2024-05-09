@@ -32,7 +32,7 @@ export const PortfolioCard = (props: CardProps) => {
             width={image.width}
             style={{ objectFit: 'contain' }}
             height={image.height}
-            unoptimized
+            unoptimized={true}
           />
         </Inset>
         <Text as="div" size="2" className="mt-4">
