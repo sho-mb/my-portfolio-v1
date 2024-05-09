@@ -2,7 +2,6 @@ import { findUserById } from "@/service/loginService";
 import { NextRequest, NextResponse } from "next/server";
 import  bcrypt  from 'bcrypt'
 import { createSeession } from "@/app/lib/session";
-import { redirect } from "next/navigation";
 
 export async function POST(request: NextRequest) {
     const body = await request.json()
@@ -12,7 +11,7 @@ export async function POST(request: NextRequest) {
     if (!data) {
       return NextResponse.json({
         message: `code: ${JSON.parse(JSON.stringify(err)).code} , error: ${JSON.parse(JSON.stringify(err)).name}`
-      });
+      },{ status: 400});
     }
     
     const hash = data!.password;
@@ -20,10 +19,12 @@ export async function POST(request: NextRequest) {
 
   if (isMached) {
     await createSeession(id)
-    redirect('/admin/dashboard')
+    return NextResponse.json({
+      message: 'success'
+    }, { status: 200})
   } else {
     return NextResponse.json({
       message: 'Id or password are incorrect'
-    })
+    }, { status: 400})
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 import { z } from "zod";
 import { messageState } from "../types/state";
+import { redirect } from "next/navigation";
 
 const schema = z.object({
   identify: z.string().min(1),
@@ -21,16 +22,17 @@ export default async function login( prevState: messageState, formData: FormData
 
   const { identify, password } = validatedFields.data
 
-  await fetch(
+  const response = await fetch(
     '/api/login',
     {
       method: 'POST',
       body: JSON.stringify({ id : identify, password: password})
     }
-  ).then(async res => {
-    const response = await res.json()
-    return { message: response.message }
-  })
-  
-  return { message: 'Internal Server error'  }  
+  )
+  const body = await response.json()
+  if (response.status === 200) {
+    redirect('/admin/dashboard')
+  } else {
+    return { message: body.message }
+  }
 }

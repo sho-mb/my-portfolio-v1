@@ -1,7 +1,5 @@
 import { z } from "zod";
 import { State } from "../types/state";
-import { RedirectType, redirect } from "next/navigation";
-import { createNewPortfolio } from "@/service/portfolioService";
 import { getImageSizeFromFile } from "./utils/imageConverter";
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
@@ -33,7 +31,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: JSON.parse(JSON.stringify('Missing fields, Failed to upload portfolio')),
+      message: 'Missing fields, Failed to upload portfolio',
       isSuccess: false,
     }
   }
@@ -61,19 +59,29 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
     if (response.ok) {
       const data = await response.json();
       const sharedLink = data.sharedLink;
-      await createNewPortfolio(sharedLink, title, content, size.height, size.width)
-      redirect('/admin/dashboard', RedirectType.push)
+
+      await fetch(
+        '/api/portfolio',
+        {
+          method: 'POST',
+          body: JSON.stringify({ sharedLink : sharedLink, title: title, content: content, height: size.height, width: size.width})
+        }
+      )
+      return {
+        message: '',
+        errors: {},
+        isSuccess: true,
+      }
     } else {
       return {
-        message: JSON.parse(JSON.stringify( `Failed to upload portfolio:', ${response.statusText}`)),
+        message:  `Failed to upload portfolio:', ${response.statusText}`,
         errors: {},
         isSuccess: false,
       }
     }  
   } catch (error) {
-    console.log(error)
     return {
-      message: JSON.parse(JSON.stringify( `'Error occurred:', ${error}`)),
+      message:  `'Error occurred:', ${error}`,
       errors: {},
       isSuccess: false,
     }
