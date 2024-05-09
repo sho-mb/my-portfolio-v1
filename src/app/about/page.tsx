@@ -7,7 +7,6 @@ import { Button, Separator } from '@radix-ui/themes';
 import Image from 'next/image';
 import { Portfolio } from '../ui/common/Portfolio';
 import Link from 'next/link';
-import { portfoliosLatest } from '../lib/portfolios';
 
 export default function page() {
   return (

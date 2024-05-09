@@ -1,10 +1,5 @@
-'use server'
-
-import { findUserById } from "@/service/loginService";
+'use client'
 import { z } from "zod";
-import  bcrypt  from 'bcrypt'
-import { createSeession } from "./session";
-import { redirect } from "next/navigation";
 import { messageState } from "../types/state";
 
 const schema = z.object({
@@ -25,22 +20,17 @@ export default async function login( prevState: messageState, formData: FormData
   }
 
   const { identify, password } = validatedFields.data
-  const { data, err } = await findUserById(identify);
 
-  console.log(data)
-  if (!data) {
-    return {
-      message: `code: ${JSON.parse(JSON.stringify(err)).code} , error: ${JSON.parse(JSON.stringify(err)).name}`
+  await fetch(
+    '/api/login',
+    {
+      method: 'POST',
+      body: JSON.stringify({ id : identify, password: password})
     }
-  }
-
-  const hash = data!.password;
-  const isMached = await bcrypt.compare(password, hash)
-
-  if (isMached) {
-    await createSeession(identify)
-    redirect('/admin/dashboard')
-  } else {
-    return { message: JSON.parse(JSON.stringify('Id or password are incorrect')) }
-  }
+  ).then(async res => {
+    const response = await res.json()
+    return { message: response.message }
+  })
+  
+  return { message: 'Internal Server error'  }  
 }
