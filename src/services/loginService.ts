@@ -1,11 +1,10 @@
 'use server'
-
-import { findUserById } from "@/service/loginService";
 import { z } from "zod";
-import  bcrypt  from 'bcrypt'
-import { createSeession } from "./session";
-import { redirect } from "next/navigation";
 import { messageState } from "../types/state";
+import { redirect } from "next/navigation";
+import  bcrypt  from 'bcrypt'
+import { findUserById } from "@/repositories/loginRepository";
+import { createSeession } from "../lib/session";
 
 const schema = z.object({
   identify: z.string().min(1),
@@ -25,22 +24,26 @@ export default async function login( prevState: messageState, formData: FormData
   }
 
   const { identify, password } = validatedFields.data
+
   const { data, err } = await findUserById(identify);
 
-  console.log(data)
-  if (!data) {
-    return {
-      message: `code: ${JSON.parse(JSON.stringify(err)).code} , error: ${JSON.parse(JSON.stringify(err)).name}`
+    if (!data) {
+      return {
+        message: `code: ${JSON.parse(JSON.stringify(err)).code} , error: ${JSON.parse(JSON.stringify(err)).name}`,
+      }
     }
-  }
-
-  const hash = data!.password;
-  const isMached = await bcrypt.compare(password, hash)
+    
+    const hash = data!.password;
+    const isMached = await bcrypt.compare(password, hash)
 
   if (isMached) {
     await createSeession(identify)
     redirect('/admin/dashboard')
+    
   } else {
-    return { message: JSON.parse(JSON.stringify('Id or password are incorrect')) }
+    return {
+      message: 'Id or password are incorrect',
+    }
   }
 }
+

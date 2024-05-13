@@ -1,6 +1,6 @@
 import React from 'react';
 import { PortfolioCard } from './PortfolioCard';
-import { getPortfolios } from '@/service/portfolioService';
+import { getPortfolios } from '@/repositories/portfolioRepository';
 
 interface PortfolioProps {
   numberOfPortfolio?: number;

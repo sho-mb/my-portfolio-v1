@@ -1,7 +1,7 @@
 import React from 'react';
 import { ContactForm } from '../ui/contact/ContactForm';
 import { HeroSection } from '../ui/common/HeroSection';
-import { hero } from '../lib/contact/contact';
+import { hero } from '../../types/contact/contact';
 
 export default function page() {
   return (

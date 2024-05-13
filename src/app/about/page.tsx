@@ -1,13 +1,12 @@
 import React from 'react';
 import { HeroSection } from '../ui/common/HeroSection';
-import { hero, sectionTitles, skills } from '../lib/about/about';
+import { hero, sectionTitles, skills } from '../../types/about/about';
 import { SectionTittle } from '../ui/common/SectionTittle';
 import { Skills } from '../ui/about/Skills';
 import { Button, Separator } from '@radix-ui/themes';
 import Image from 'next/image';
 import { Portfolio } from '../ui/common/Portfolio';
 import Link from 'next/link';
-import { portfoliosLatest } from '../lib/portfolios';
 
 export default function page() {
   return (
