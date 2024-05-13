@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { andada } from './ui/fonts';
 import { SectionTittle } from './ui/common/SectionTittle';
 import { Portfolio } from './ui/common/Portfolio';
-import { portfoliosLatest } from '../lib/portfolios';
 
 export default function Home() {
   return (
