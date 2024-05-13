@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { createDate } from "@/lib/utils/createUtils";
 import { createNewPortfolio } from "@/repositories/portfolioRepository";
 import { uploadAndGetLink } from "./dropboxService";
-import { useRouter } from 'next/navigation'
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
 const MAX_IMAGE_SIZE = 5; // 5MB
@@ -49,8 +48,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   const today = createDate()
   const filename = `${today}_${file.name}`
 
-  try {
-    const { link, error } = await uploadAndGetLink(file, filename)   
+  const { link, error } = await uploadAndGetLink(file, filename)
   if (link) {
       const sharedLink = await link;
       await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width))
@@ -61,7 +59,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
               isSuccess: false,
             }
         });
-        redirect('/admin/dashboard')
+          redirect('/admin/dashboard')
       } else {
         return {
         message:  `Failed to upload portfolio:', ${error}`,
@@ -69,11 +67,4 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
         isSuccess: false,
       }
     }  
-  } catch (error) {
-    return {
-      message:  `'Error occurred:', ${error}`,
-      errors: {},
-      isSuccess: false,
-    }
-  } 
 }
