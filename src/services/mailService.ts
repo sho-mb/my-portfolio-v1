@@ -1,6 +1,6 @@
 'use server'
 import { z } from "zod"
-import { createTransporter } from "./utils/tranporter";
+import { createTransporter } from "../lib/tranporter";
 import { State } from "../types/state";
 
 const schema = z.object({

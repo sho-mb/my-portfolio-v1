@@ -1,10 +1,10 @@
 'use client';
-import { sendEmail } from '@/app/lib/action';
+import { sendEmail } from '@/services/mailService';
 import { Grid, TextField, Text, TextArea, Button } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Dialog } from './Dialog';
-import { State } from '@/app/types/state';
+import { State } from '@/types/state';
 
 export const ContactForm = () => {
   const initialState: State = {

@@ -1,6 +1,11 @@
+'use server'
 import { z } from "zod";
 import { State } from "../types/state";
-import { getImageSizeFromFile } from "./utils/imageConverter";
+import { redirect } from "next/navigation";
+import { createDate } from "@/lib/utils/createUtils";
+import { createNewPortfolio } from "@/repositories/portfolioRepository";
+import { uploadAndGetLink } from "./dropboxService";
+import { useRouter } from 'next/navigation'
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
 const MAX_IMAGE_SIZE = 5; // 5MB
@@ -18,14 +23,18 @@ const schema = z.object({
   .refine((file) => sizeInMB(file.size) <= MAX_IMAGE_SIZE, {message: 'File should be under 5MB'})
   .refine((file) => IMAGE_TYPES.includes(file.type), {message: 'type shoulde be .png or .jpeg'}),
   title: z.string().min(1, {message: 'Please enter title'}),
-  content: z.string().min(1, {message: 'Please enter content'})
+  content: z.string().min(1, {message: 'Please enter content'}),
+  height: z.string(),
+  width: z.string(),
 })
 
 export default async function uploadPortfolio(prev: State, formData: FormData ) : Promise<State> {
   const validatedFields = schema.safeParse({
     file: formData.getAll('file'),
     title: formData.get('title'),
-    content: formData.get('content')
+    content: formData.get('content'),
+    height :formData.get('height'),
+    width : formData.get('width')
   })
 
   if (!validatedFields.success) {
@@ -35,46 +44,27 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
       isSuccess: false,
     }
   }
-
-  const now = new Date();
-  const year = now.getFullYear().toString().slice(-2);
-  const month = ('0' + (now.getMonth() + 1)).slice(-2); 
-  const day = ('0' + now.getDate()).slice(-2); 
-  const YYMMDD = year + month + day;
-  const { file, title, content } = validatedFields.data;
-  const filename = `${YYMMDD}_${file.name}`  
-  const newFormData = new FormData()
-  newFormData.append('file', file);
+  const { file, title, content, height, width } = validatedFields.data;
+  
+  const today = createDate()
+  const filename = `${today}_${file.name}`
 
   try {
-    const size = await getImageSizeFromFile(file);
-    const response = await fetch(
-      `/api/dropbox?filename=${filename}`,
-      {
-        method: 'POST',
-        body: newFormData,
-      }
-    );
-    
-    if (response.ok) {
-      const data = await response.json();
-      const sharedLink = data.sharedLink;
-
-      await fetch(
-        '/api/portfolio',
-        {
-          method: 'POST',
-          body: JSON.stringify({ sharedLink : sharedLink, title: title, content: content, height: size.height, width: size.width})
-        }
-      )
-      return {
-        message: '',
-        errors: {},
-        isSuccess: true,
-      }
-    } else {
-      return {
-        message:  `Failed to upload portfolio:', ${response.statusText}`,
+    const { link, error } = await uploadAndGetLink(file, filename)   
+  if (link) {
+      const sharedLink = await link;
+      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width))
+      .catch(err => {
+          return { 
+              message: `Bad request error: ${err}`,
+              errors: {},
+              isSuccess: false,
+            }
+        });
+        redirect('/admin/dashboard')
+      } else {
+        return {
+        message:  `Failed to upload portfolio:', ${error}`,
         errors: {},
         isSuccess: false,
       }

@@ -1,4 +1,4 @@
-import { getPortfolios } from '@/service/portfolioService';
+import { getPortfolios } from '@/repositories/portfolioRepository';
 import { Table } from '@radix-ui/themes';
 import Link from 'next/link';
 

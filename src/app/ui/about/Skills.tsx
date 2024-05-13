@@ -1,4 +1,4 @@
-import { replaceToBr } from '@/app/lib/utils/textUtils';
+import { replaceToBr } from '@/lib/utils/textUtils';
 import Image from 'next/image';
 import React from 'react';
 

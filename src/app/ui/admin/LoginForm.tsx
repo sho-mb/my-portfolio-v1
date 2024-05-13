@@ -1,10 +1,10 @@
 'use client';
-import login from '@/app/lib/login';
+import login from '@/services/loginService';
 import { Button, Grid, Text, TextField } from '@radix-ui/themes';
 import React from 'react';
 import { useFormState } from 'react-dom';
 import { Dialog } from '../contact/Dialog';
-import { messageState } from '@/app/types/state';
+import { messageState } from '@/types/state';
 
 export const LoginForm = () => {
   const initialState: messageState = {

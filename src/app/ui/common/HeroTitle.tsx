@@ -1,6 +1,6 @@
 import React from 'react';
 import { andada } from '../fonts';
-import { replaceToBr } from '@/app/lib/utils/textUtils';
+import { replaceToBr } from '@/lib/utils/textUtils';
 import Link from 'next/link';
 import Image from 'next/image';
 

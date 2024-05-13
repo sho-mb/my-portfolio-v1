@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { decrypt } from '@/app/lib/session'
+import { decrypt } from '@/lib/session'
 import { cookies } from 'next/headers'
 
-const protectedRoutes = ['/admin', '/admin/*']
+const protectedRoutes = ['/admin/']
 
 const excludePatterns = [
   '/googleapis\\.com/', // Google Fontsのホスト名
@@ -23,7 +23,7 @@ export default async function maiddleware(req: NextRequest) {
   }
 
   if (isProtectedRoute && !session?.userId) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl))
+    return NextResponse.redirect(new URL('/admin', req.nextUrl))
   }
 
   return NextResponse.next()

@@ -1,4 +1,4 @@
-import { links } from '@/app/lib/links';
+import { links } from '@/types/links';
 import Link from 'next/link';
 import React from 'react';
 

@@ -3,8 +3,9 @@ import React from 'react';
 import { Button, Grid, Text, TextArea, TextField } from '@radix-ui/themes';
 import { useFormState } from 'react-dom';
 import { Dialog } from '../contact/Dialog';
-import uploadPortfolio from '@/app/lib/portfolioFormAction';
-import { State } from '@/app/types/state';
+import uploadPortfolio from '@/services/portfolioService';
+import { State } from '@/types/state';
+import { getImageSizeFromFile } from '@/lib/utils/imageConverter';
 
 const initialState: State = {
   errors: {},
@@ -17,7 +18,13 @@ function SubmitButton() {
 }
 
 export const PortfolioForm = () => {
-  const actionFunction = (state: State, formData: FormData) => {
+  const actionFunction = async (state: State, formData: FormData) => {
+    const file = formData.get('file')! as File;
+    const size = await getImageSizeFromFile(file);
+    if (size) {
+      formData.append('height', size.height.toString());
+      formData.append('width', size.width.toString());
+    }
     return uploadPortfolio(state, formData);
   };
 

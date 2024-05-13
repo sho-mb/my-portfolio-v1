@@ -1,6 +1,6 @@
 'use server'
-import { PortfoliosProps } from "@/app/lib/portfolio/portfolio";
-import { prisma } from "@/app/lib/prisma";
+import { PortfoliosProps } from "@/types/portfolio/portfolio";
+import { prisma } from "@/lib/prisma";
 
 export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
   try {
@@ -41,5 +41,7 @@ export const createNewPortfolio = async (sharedLink: string, title: string, cont
       height: height,
       width: width,
     },
+  }).catch(err => {
+    return err
   })
 }

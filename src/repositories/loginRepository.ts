@@ -1,5 +1,5 @@
 'use server'
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 interface UserData {
   id: number;
@@ -35,5 +35,3 @@ export const findUserById = async (identify: string): Promise<UserResponse> => {
     return { err };
   }
 };
-    
-  
