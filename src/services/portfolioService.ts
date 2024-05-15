@@ -4,10 +4,10 @@ import { State } from "../types/state";
 import { redirect } from "next/navigation";
 import { createDate } from "@/lib/utils/createUtils";
 import { createNewPortfolio, deleteMany } from "@/repositories/portfolioRepository";
-import { uploadAndGetLink } from "./dropboxService";
+import { deleteUploadPictures, uploadAndGetLink } from "./dropboxService";
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
-const MAX_IMAGE_SIZE = 5; // 5MB
+const MAX_IMAGE_SIZE = 1; // 5MB
 
 const sizeInMB = (sizeInBytes: number, decimalsNum = 2) => {
   const result = sizeInBytes / (1024 * 1024);
@@ -48,10 +48,10 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   const today = createDate()
   const filename = `${today}_${file.name}`
 
-  const { link, error } = await uploadAndGetLink(file, filename)
-  if (link) {
+  const { link, path , error } = await uploadAndGetLink(file, filename)
+  if (link && path) {
       const sharedLink = await link;
-      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width))
+      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width), path)
       .catch(err => {
           return { 
               message: `Bad request error: ${err}`,
@@ -74,8 +74,10 @@ export const deletePortfolios = async(ids:number[]) : Promise<any> => {
     throw new Error('At least choose one id');
   }
 
-  await deleteMany(ids)
-  .catch(err => {
-    return err.message
-  })
+  try {
+    await deleteUploadPictures(ids);
+    await deleteMany(ids);
+  } catch (err) {
+    return err
+  }
 }

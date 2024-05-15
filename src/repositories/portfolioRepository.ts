@@ -31,7 +31,7 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
   }
 }
 
-export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number ) => {
+export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number, path: string ) => {
   await prisma.portfolio.create({
     data: {
       alt: `portfolio ${title}'s image`,
@@ -40,6 +40,7 @@ export const createNewPortfolio = async (sharedLink: string, title: string, cont
       url: sharedLink,
       height: height,
       width: width,
+      path: path,
     },
   }).catch(err => {
     return err
@@ -57,5 +58,25 @@ export const deleteMany = async(ids: number[]) => {
     });
   } catch(err) {
     throw new Error('At least choose one id');
+  }
+}
+
+export const getPaths = async (ids: number[]) : Promise<string[]> => {
+  const paths : string[] = []
+  try {
+    const data = await prisma.portfolio.findMany( {
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    })
+
+    data.map(portfolio => {
+      return paths.push(portfolio.path)
+    })
+    return paths;
+  } catch(err: any) {
+    throw new Error (err.message)
   }
 }
