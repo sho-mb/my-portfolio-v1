@@ -3,7 +3,7 @@ import { z } from "zod";
 import { State } from "../types/state";
 import { redirect } from "next/navigation";
 import { createDate } from "@/lib/utils/createUtils";
-import { createNewPortfolio } from "@/repositories/portfolioRepository";
+import { createNewPortfolio, deleteMany } from "@/repositories/portfolioRepository";
 import { uploadAndGetLink } from "./dropboxService";
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
@@ -67,4 +67,15 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
         isSuccess: false,
       }
     }  
+}
+
+export const deletePortfolios = async(ids:number[]) : Promise<any> => {
+  if (!ids.length) {
+    throw new Error('At least choose one id');
+  }
+
+  await deleteMany(ids)
+  .catch(err => {
+    return err.message
+  })
 }

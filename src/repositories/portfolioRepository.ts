@@ -45,3 +45,17 @@ export const createNewPortfolio = async (sharedLink: string, title: string, cont
     return err
   })
 }
+
+export const deleteMany = async(ids: number[]) => {
+  try {
+    await prisma.portfolio.deleteMany({
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    });
+  } catch(err) {
+    throw new Error('At least choose one id');
+  }
+}
