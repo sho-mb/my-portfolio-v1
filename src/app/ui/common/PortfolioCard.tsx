@@ -30,20 +30,19 @@ export const PortfolioCard = (props: CardProps) => {
   return (
     <Box maxWidth="280px" height="400px">
       <Card size="1" className="h-full">
-        <Inset clip="padding-box" side="top" pb="current" className="w-[280px] h-[200px]">
-          <Image
-            src={image.src}
-            alt={image.alt}
-            width={image.width}
-            style={{ objectFit: 'contain' }}
-            height={image.height}
-          />
+        <Inset
+          clip="padding-box"
+          side="top"
+          pb="current"
+          className="w-[280px] h-[200px] overflow-hidden relative"
+        >
+          <Image src={image.src} alt={image.alt} style={{ objectFit: 'cover' }} fill={true} />
         </Inset>
         <Text as="div" size="2" className="mt-4">
           <p className="mb-1 font-bold">{portfolio.title}</p>
           <p>
-            {portfolio.content.length > 200
-              ? `${portfolio.content.slice(0, 200)} ...`
+            {portfolio.content.length > 100
+              ? `${portfolio.content.slice(0, 100)} ...`
               : portfolio.content}
           </p>
           <div className="absolute right-3 bottom-3">

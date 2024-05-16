@@ -14,6 +14,7 @@ const fetchData = async (id: number) => {
   });
   if (res.ok) {
     const data = await res.json();
+    console.log(data);
     return data;
   }
 
@@ -34,6 +35,21 @@ export const PortfolioDetail = (props: detailProps) => {
     }
   }, [id]);
 
+  const renderContent = (content: string | undefined) => {
+    if (!content) return null;
+    const paragraphs = content.split('\\n');
+    return (
+      <div>
+        {paragraphs.map((paragraph, index) => (
+          <React.Fragment key={index}>
+            {paragraph}
+            <br />
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div>
       {detail && (
@@ -47,7 +63,7 @@ export const PortfolioDetail = (props: detailProps) => {
             />
           </div>
           <div className="py-8 text-3xl">{detail.portfolio.title}</div>
-          <div className="mb-8">{detail.portfolio.content}</div>
+          <div className="mb-8">{renderContent(detail.portfolio.content)}</div>
           <div className="mb-3">Link for this website</div>
           {detail.portfolio.link && (
             <Link target="_blank" href={detail.portfolio.link} className="text-blue-600">

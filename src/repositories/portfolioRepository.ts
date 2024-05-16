@@ -33,6 +33,7 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
 }
 
 export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number, path: string, url: string) => {
+  console.log(content);
   await prisma.portfolio.create({
     data: {
       alt: `portfolio ${title}'s image`,
