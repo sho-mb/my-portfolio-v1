@@ -1,5 +1,7 @@
+'use client';
 import { Box, Button, Card, Inset, Text } from '@radix-ui/themes';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface CardProps {
@@ -19,8 +21,11 @@ interface CardProps {
 export const PortfolioCard = (props: CardProps) => {
   const image = props.image;
   const portfolio = props.portfolio;
+  const router = useRouter();
 
-  const goToDetail = (id: number) => {};
+  const goToDetail = (id: number) => {
+    router.push(`/portfolio/${id}`);
+  };
 
   return (
     <Box maxWidth="280px" height="400px">
@@ -38,7 +43,12 @@ export const PortfolioCard = (props: CardProps) => {
           <p className="mb-1 font-bold">{portfolio.title}</p>
           <p>{portfolio.content}</p>
           <div className="absolute right-3 bottom-3">
-            <Button radius="full" variant="outline" color="gray">
+            <Button
+              radius="full"
+              variant="outline"
+              color="gray"
+              onClick={() => goToDetail(portfolio.id)}
+            >
               More
             </Button>
           </div>

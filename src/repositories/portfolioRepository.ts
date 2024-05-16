@@ -80,3 +80,43 @@ export const getPaths = async (ids: number[]) : Promise<string[]> => {
     throw new Error (err.message)
   }
 }
+
+export const getDetail = async (id: number) : Promise<PortfoliosProps> => {
+  try {
+    const data = await prisma.portfolio.findUnique({
+      select : {
+        title:true,
+        content: true,
+        url:true,
+        height: true,
+        width: true,
+        id: true,
+        alt: true,
+      }, 
+      where : {
+        id: id
+      }
+    })
+    if (!data) {
+      throw new Error ('This id not exist')
+    }
+
+    const detail : PortfoliosProps = {
+      image: {
+        src: data.url,
+        alt: data.alt,
+        width: data.width,
+        height: data.height
+      },
+      portfolio: {
+        id: data.id,
+        title: data.title,
+        content: data.content,
+      }
+    } 
+    console.log(data)
+    return detail;
+  } catch(err: any) {
+    throw new Error (err.message)
+  }
+}

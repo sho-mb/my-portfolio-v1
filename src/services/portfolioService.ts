@@ -3,8 +3,9 @@ import { z } from "zod";
 import { State } from "../types/state";
 import { redirect } from "next/navigation";
 import { createDate } from "@/lib/utils/createUtils";
-import { createNewPortfolio, deleteMany } from "@/repositories/portfolioRepository";
+import { createNewPortfolio, deleteMany, getDetail } from "@/repositories/portfolioRepository";
 import { deleteUploadPictures, uploadAndGetLink } from "./dropboxService";
+import { PortfoliosProps } from "@/types/portfolio/portfolio";
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
 const MAX_IMAGE_SIZE = 1; // 5MB
@@ -78,6 +79,19 @@ export const deletePortfolios = async(ids:number[]) : Promise<any> => {
     await deleteUploadPictures(ids);
     await deleteMany(ids);
   } catch (err) {
+    return err
+  }
+}
+
+export const getPortfolioDetail = async (id: number) : Promise<PortfoliosProps | Error> => {
+  if(!id) {
+    throw new Error('This page is not exist')
+  }
+
+  try {
+    const data = await getDetail(id);
+    return data;
+  } catch (err : any) {
     return err
   }
 }
