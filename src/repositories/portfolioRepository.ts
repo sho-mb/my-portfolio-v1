@@ -18,7 +18,8 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
           portfolio: {
             id: item.id,
             title: item.title,
-            content: item.content
+            content: item.content,
+            link: item.link || ''
           }
         };
         portfolios.push(portfolio); 
@@ -31,7 +32,8 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
   }
 }
 
-export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number, path: string ) => {
+export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number, path: string, url: string) => {
+  console.log(content);
   await prisma.portfolio.create({
     data: {
       alt: `portfolio ${title}'s image`,
@@ -41,6 +43,7 @@ export const createNewPortfolio = async (sharedLink: string, title: string, cont
       height: height,
       width: width,
       path: path,
+      link: url,
     },
   }).catch(err => {
     return err
@@ -76,6 +79,47 @@ export const getPaths = async (ids: number[]) : Promise<string[]> => {
       return paths.push(portfolio.path)
     })
     return paths;
+  } catch(err: any) {
+    throw new Error (err.message)
+  }
+}
+
+export const getDetail = async (id: number) : Promise<PortfoliosProps> => {
+  try {
+    const data = await prisma.portfolio.findUnique({
+      select : {
+        title:true,
+        content: true,
+        url:true,
+        height: true,
+        width: true,
+        id: true,
+        alt: true,
+        link: true,
+      }, 
+      where : {
+        id: id
+      }
+    })
+    if (!data) {
+      throw new Error ('This id not exist')
+    }
+
+    const detail : PortfoliosProps = {
+      image: {
+        src: data.url,
+        alt: data.alt,
+        width: data.width,
+        height: data.height
+      },
+      portfolio: {
+        id: data.id,
+        title: data.title,
+        content: data.content,
+        link: data.link || '',
+      }
+    } 
+    return detail;
   } catch(err: any) {
     throw new Error (err.message)
   }

@@ -3,8 +3,9 @@ import { z } from "zod";
 import { State } from "../types/state";
 import { redirect } from "next/navigation";
 import { createDate } from "@/lib/utils/createUtils";
-import { createNewPortfolio, deleteMany } from "@/repositories/portfolioRepository";
+import { createNewPortfolio, deleteMany, getDetail } from "@/repositories/portfolioRepository";
 import { deleteUploadPictures, uploadAndGetLink } from "./dropboxService";
+import { PortfoliosProps } from "@/types/portfolio/portfolio";
 
 const IMAGE_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
 const MAX_IMAGE_SIZE = 1; // 5MB
@@ -25,6 +26,7 @@ const schema = z.object({
   content: z.string().min(1, {message: 'Please enter content'}),
   height: z.string(),
   width: z.string(),
+  url : z.string().nullable(),
 })
 
 export default async function uploadPortfolio(prev: State, formData: FormData ) : Promise<State> {
@@ -33,7 +35,8 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
     title: formData.get('title'),
     content: formData.get('content'),
     height :formData.get('height'),
-    width : formData.get('width')
+    width : formData.get('width'),
+    url: formData.get('url') ?? '',
   })
 
   if (!validatedFields.success) {
@@ -43,7 +46,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
       isSuccess: false,
     }
   }
-  const { file, title, content, height, width } = validatedFields.data;
+  const { file, title, content, height, width, url } = validatedFields.data;
   
   const today = createDate()
   const filename = `${today}_${file.name}`
@@ -51,7 +54,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   const { link, path , error } = await uploadAndGetLink(file, filename)
   if (link && path) {
       const sharedLink = await link;
-      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width), path)
+      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width), path, url!)
       .catch(err => {
           return { 
               message: `Bad request error: ${err}`,
@@ -78,6 +81,19 @@ export const deletePortfolios = async(ids:number[]) : Promise<any> => {
     await deleteUploadPictures(ids);
     await deleteMany(ids);
   } catch (err) {
+    return err
+  }
+}
+
+export const getPortfolioDetail = async (id: number) : Promise<PortfoliosProps | Error> => {
+  if(!id) {
+    throw new Error('This page is not exist')
+  }
+
+  try {
+    const data = await getDetail(id);
+    return data;
+  } catch (err : any) {
     return err
   }
 }
