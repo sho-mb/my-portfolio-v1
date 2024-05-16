@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Button, Grid, Text, TextArea, TextField } from '@radix-ui/themes';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Dialog } from '../contact/Dialog';
 import uploadPortfolio from '@/services/portfolioService';
 import { State } from '@/types/state';
@@ -14,7 +14,12 @@ const initialState: State = {
 };
 
 function SubmitButton() {
-  return <Button type="submit">Submit</Button>;
+  const { pending } = useFormStatus();
+  return (
+    <Button disabled={pending} type="submit">
+      Submit
+    </Button>
+  );
 }
 
 export const PortfolioForm = () => {
