@@ -17,6 +17,7 @@ model Portfolio {
   path    String
   height  Int
   width   Int
+  link    String?
 }
 
 model user {

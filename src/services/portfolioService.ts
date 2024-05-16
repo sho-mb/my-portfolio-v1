@@ -26,6 +26,7 @@ const schema = z.object({
   content: z.string().min(1, {message: 'Please enter content'}),
   height: z.string(),
   width: z.string(),
+  url : z.string().nullable(),
 })
 
 export default async function uploadPortfolio(prev: State, formData: FormData ) : Promise<State> {
@@ -34,7 +35,8 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
     title: formData.get('title'),
     content: formData.get('content'),
     height :formData.get('height'),
-    width : formData.get('width')
+    width : formData.get('width'),
+    url: formData.get('url') ?? '',
   })
 
   if (!validatedFields.success) {
@@ -44,7 +46,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
       isSuccess: false,
     }
   }
-  const { file, title, content, height, width } = validatedFields.data;
+  const { file, title, content, height, width, url } = validatedFields.data;
   
   const today = createDate()
   const filename = `${today}_${file.name}`
@@ -52,7 +54,7 @@ export default async function uploadPortfolio(prev: State, formData: FormData ) 
   const { link, path , error } = await uploadAndGetLink(file, filename)
   if (link && path) {
       const sharedLink = await link;
-      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width), path)
+      await createNewPortfolio(sharedLink, title, content, parseInt(height), parseInt(width), path, url!)
       .catch(err => {
           return { 
               message: `Bad request error: ${err}`,

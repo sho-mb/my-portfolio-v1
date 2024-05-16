@@ -8,14 +8,6 @@ interface detailProps {
   id: number;
 }
 
-export type Detail = {
-  imageUrl: string;
-  title: string;
-  content: string;
-  url: string;
-  alt: string;
-};
-
 const fetchData = async (id: number) => {
   const res = await fetch(`/portfolio/api/${id}`, {
     method: 'GET',
@@ -57,9 +49,11 @@ export const PortfolioDetail = (props: detailProps) => {
           <div className="py-8 text-3xl">{detail.portfolio.title}</div>
           <div className="mb-8">{detail.portfolio.content}</div>
           <div className="mb-3">Link for this website</div>
-          <Link href={'/'} className="text-blue-600">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          </Link>
+          {detail.portfolio.link && (
+            <Link target="_blank" href={detail.portfolio.link} className="text-blue-600">
+              {detail.portfolio.link}
+            </Link>
+          )}
         </>
       )}
     </div>

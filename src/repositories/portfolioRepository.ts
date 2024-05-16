@@ -18,7 +18,8 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
           portfolio: {
             id: item.id,
             title: item.title,
-            content: item.content
+            content: item.content,
+            link: item.link || ''
           }
         };
         portfolios.push(portfolio); 
@@ -31,7 +32,7 @@ export const getPortfolios = async (): Promise<PortfoliosProps[]> => {
   }
 }
 
-export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number, path: string ) => {
+export const createNewPortfolio = async (sharedLink: string, title: string, content: string, height: number, width: number, path: string, url: string) => {
   await prisma.portfolio.create({
     data: {
       alt: `portfolio ${title}'s image`,
@@ -41,6 +42,7 @@ export const createNewPortfolio = async (sharedLink: string, title: string, cont
       height: height,
       width: width,
       path: path,
+      link: url,
     },
   }).catch(err => {
     return err
@@ -92,6 +94,7 @@ export const getDetail = async (id: number) : Promise<PortfoliosProps> => {
         width: true,
         id: true,
         alt: true,
+        link: true,
       }, 
       where : {
         id: id
@@ -112,9 +115,9 @@ export const getDetail = async (id: number) : Promise<PortfoliosProps> => {
         id: data.id,
         title: data.title,
         content: data.content,
+        link: data.link || '',
       }
     } 
-    console.log(data)
     return detail;
   } catch(err: any) {
     throw new Error (err.message)

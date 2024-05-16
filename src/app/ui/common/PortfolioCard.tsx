@@ -41,7 +41,11 @@ export const PortfolioCard = (props: CardProps) => {
         </Inset>
         <Text as="div" size="2" className="mt-4">
           <p className="mb-1 font-bold">{portfolio.title}</p>
-          <p>{portfolio.content}</p>
+          <p>
+            {portfolio.content.length > 200
+              ? `${portfolio.content.slice(0, 200)} ...`
+              : portfolio.content}
+          </p>
           <div className="absolute right-3 bottom-3">
             <Button
               radius="full"

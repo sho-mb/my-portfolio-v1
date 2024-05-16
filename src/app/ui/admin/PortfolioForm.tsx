@@ -47,11 +47,17 @@ export const PortfolioForm = () => {
         </Text>
         <TextField.Root type="text" size="3" placeholder="title" name="title" />
       </Grid>
-      <Grid gap={'1'}>
+      <Grid gap={'1'} className="mb-4">
         <Text as="div" weight="bold" size="2" mb="1">
-          content
+          Content
         </Text>
         <TextArea size="3" placeholder="content" name="content" />
+      </Grid>
+      <Grid gap={'1'}>
+        <Text as="div" weight="bold" size="2" mb="1">
+          Content Url
+        </Text>
+        <TextField.Root type="url" size="3" placeholder="url" name="url" />
       </Grid>
 
       <div className="flex h-fit">
