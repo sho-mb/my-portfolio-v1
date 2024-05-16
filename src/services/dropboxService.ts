@@ -11,7 +11,6 @@ export async function uploadAndGetLink(file: File, filename: string) {
  try {
    const buf = await file.arrayBuffer();
    const uploadResponse = await dbx.filesUpload({ path: `/${filename}`, contents: buf });
-   console.log(uploadResponse)
    const link = getSharedlink(dbx, uploadResponse)
    return { link: link, path: uploadResponse.result.path_display };
  } catch (error) {
@@ -31,8 +30,6 @@ const getSharedlink = async (dbx: Dropbox, uploadResponse: DropboxResponse<files
 export async function deleteUploadPictures(ids: number[]) {
   const paths = await getPaths(ids)
 
-  console.log(paths)
-
   if (!paths){
     throw new Error('No data on dropbox')
   }
@@ -45,7 +42,6 @@ export async function deleteUploadPictures(ids: number[]) {
 
  try {
   paths.map(p => {
-    console.log(p)
     dbx.filesDeleteV2({
       path: p
      })
