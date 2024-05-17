@@ -1,21 +1,32 @@
+import { getSessionValue } from '@/lib/session';
 import { getPaths } from '@/repositories/portfolioRepository';
 import { Dropbox, DropboxResponse, files } from 'dropbox';
 
-export async function uploadAndGetLink(file: File, filename: string) {
-  const dbx = new Dropbox({
-    refreshToken: process.env.DROPBOX_REFLESH_TOKEN,
-    clientId: process.env.DROPBOX_APP_KEY,
-    clientSecret: process.env.DROPBOX_APP_SECRET,
-    fetch });
+async function getRefeshTokenFromSession() {
+  const refreshToken = await getSessionValue('dbxToken')
+  if (!refreshToken) {
+    return { error : 'expire or invalid refresh token, please login again' }
+  }
+  return { token : refreshToken } 
+}
 
- try {
-   const buf = await file.arrayBuffer();
-   const uploadResponse = await dbx.filesUpload({ path: `/${filename}`, contents: buf });
-   const link = getSharedlink(dbx, uploadResponse)
-   return { link: link, path: uploadResponse.result.path_display };
- } catch (error) {
-   console.error(error);
-   return { error : 'An error occurred while uploading and sharing the file.' };
+export async function uploadAndGetLink(file: File, filename: string) {
+  try {
+    const { token, error} = await getRefeshTokenFromSession();
+    if (error)
+    throw new Error(error)
+    const dbx = new Dropbox({
+      refreshToken: token,
+      clientId: process.env.DROPBOX_APP_KEY,
+      clientSecret: process.env.DROPBOX_APP_SECRET,
+      fetch });
+
+    const buf = await file.arrayBuffer();
+    const uploadResponse = await dbx.filesUpload({ path: `/${filename}`, contents: buf });
+    const link = getSharedlink(dbx, uploadResponse)
+    return { link: link, path: uploadResponse.result.path_display };
+  } catch (error) {
+   return { error : `An error occurred while uploading and sharing the file. reason might be ${error}` };
  }
 }
 
@@ -28,6 +39,9 @@ const getSharedlink = async (dbx: Dropbox, uploadResponse: DropboxResponse<files
 }
 
 export async function deleteUploadPictures(ids: number[]) {
+  const{ token, error} = await getRefeshTokenFromSession();
+  if (error)
+    throw new Error(error)
   const paths = await getPaths(ids)
 
   if (!paths){
@@ -35,7 +49,7 @@ export async function deleteUploadPictures(ids: number[]) {
   }
 
   const dbx = new Dropbox({
-    refreshToken: process.env.DROPBOX_REFLESH_TOKEN,
+    refreshToken: token,
     clientId: process.env.DROPBOX_APP_KEY,
     clientSecret: process.env.DROPBOX_APP_SECRET,
     fetch });

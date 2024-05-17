@@ -22,7 +22,7 @@ export default async function maiddleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  if (isProtectedRoute && !session?.userId) {
+  if (isProtectedRoute && !session?.sessionItem) {
     return NextResponse.redirect(new URL('/admin', req.nextUrl))
   }
 
