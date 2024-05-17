@@ -37,9 +37,8 @@ export default async function login( prevState: messageState, formData: FormData
     const isMached = await bcrypt.compare(password, hash)
 
   if (isMached) {
-    await createSeession(identify)
-    redirect('/admin/dashboard')
-    
+    await createSeession(identify, 'session')
+    redirect(`https://www.dropbox.com/oauth2/authorize?client_id=${process.env.DROPBOX_APP_KEY}&token_access_type=offline&response_type=code&redirect_uri=${process.env.DROPBOX_REDIRECT_URL}/admin/auth`)    
   } else {
     return {
       message: 'Id or password are incorrect',

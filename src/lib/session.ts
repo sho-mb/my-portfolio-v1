@@ -5,11 +5,11 @@ import { cookies } from 'next/headers'
 const secretKey = process.env.SESSION_SECRET
 const encodeKey = new TextEncoder().encode(secretKey)
 
-export async function createSeession(userId: string) { 
+export async function createSeession(sessionItem: string, sessionName: string) { 
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  const session = await encrtpt({ userId, expiresAt })
-  
-  cookies().set('session', session, {
+  const session = await encrtpt({ sessionItem, expiresAt })
+
+  cookies().set(sessionName, session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -37,9 +37,18 @@ export async function decrypt(session: string | undefined = '') {
   }
   
 }
+
+export async function getSessionValue(sessionName: string) {
+  const cookie = cookies().get(sessionName)?.value
+  const session = await decrypt(cookie)
+  if (!session?.sessionItem) {
+    return null
+  }
+  return session.sessionItem as string;
+}
  
-export async function updateSession() {
-  const session = cookies().get('session')?.value
+export async function updateSession(sessionName: string) {
+  const session = cookies().get(sessionName)?.value
   const payload = await decrypt(session)
  
   if (!session || !payload) {
@@ -56,6 +65,6 @@ export async function updateSession() {
   })
 }
  
-export function deleteSession() {
-  cookies().delete('session')
+export function deleteSession(sessionName: string) {
+  cookies().delete(sessionName)
 }
