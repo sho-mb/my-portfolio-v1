@@ -12,9 +12,9 @@ async function getRefeshTokenFromSession() {
 
 export async function uploadAndGetLink(file: File, filename: string) {
   try {
-    const{ token, error} = await getRefeshTokenFromSession();
+    const { token, error} = await getRefeshTokenFromSession();
     if (error)
-    return error
+    throw new Error(error)
     const dbx = new Dropbox({
       refreshToken: token,
       clientId: process.env.DROPBOX_APP_KEY,
@@ -41,7 +41,7 @@ const getSharedlink = async (dbx: Dropbox, uploadResponse: DropboxResponse<files
 export async function deleteUploadPictures(ids: number[]) {
   const{ token, error} = await getRefeshTokenFromSession();
   if (error)
-  return error
+    throw new Error(error)
   const paths = await getPaths(ids)
 
   if (!paths){
