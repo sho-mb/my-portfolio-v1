@@ -56,6 +56,7 @@ export const PortfolioDetail = (props: detailProps) => {
         <>
           <div className="w-full h-[500px] overflow-hidden relative">
             <Image
+              unoptimized={true}
               style={{ objectFit: 'cover' }}
               fill={true}
               src={detail.image.src}

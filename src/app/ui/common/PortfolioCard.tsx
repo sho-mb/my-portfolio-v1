@@ -36,7 +36,13 @@ export const PortfolioCard = (props: CardProps) => {
           pb="current"
           className="w-[280px] h-[200px] overflow-hidden relative"
         >
-          <Image src={image.src} alt={image.alt} style={{ objectFit: 'cover' }} fill={true} />
+          <Image
+            unoptimized={true}
+            src={image.src}
+            alt={image.alt}
+            style={{ objectFit: 'cover' }}
+            fill={true}
+          />
         </Inset>
         <Text as="div" size="2" className="mt-4">
           <p className="mb-1 font-bold">{portfolio.title}</p>
