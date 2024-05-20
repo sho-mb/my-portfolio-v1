@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { HeroSection } from '../ui/common/HeroSection';
 import { hero, sectionTitles, skills } from '../../types/about/about';
 import { SectionTittle } from '../ui/common/SectionTittle';
@@ -7,8 +8,27 @@ import { Button, Separator } from '@radix-ui/themes';
 import Image from 'next/image';
 import { Portfolio } from '../ui/common/Portfolio';
 import Link from 'next/link';
+import { PortfoliosProps } from '@/types/portfolio/portfolio';
 
-export default function page() {
+export default function Page() {
+  const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
+  const numberOfPortfolio = 3;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/portfolio/api?number=${numberOfPortfolio}`, {
+          cache: 'no-store',
+          method: 'GET',
+        });
+        const data = await res.json();
+        setPortfolios(data);
+      } catch (err) {
+        console.error('Error fetching portfolios:', err);
+      }
+    };
+    fetchData();
+  }, [numberOfPortfolio]);
+
   return (
     <main>
       <HeroSection hero={hero} />
@@ -80,7 +100,7 @@ export default function page() {
             subtile={sectionTitles.portfolio.subTitle}
           />
         </div>
-        <Portfolio numberOfPortfolio={3} />
+        <Portfolio portfolios={portfolios} />
         <Separator my="3" size="4" />
       </section>
       <section className="my-20 text-center">

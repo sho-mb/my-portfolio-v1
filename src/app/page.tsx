@@ -1,9 +1,29 @@
+'use client';
 import Image from 'next/image';
 import { andada } from './ui/fonts';
 import { SectionTittle } from './ui/common/SectionTittle';
 import { Portfolio } from './ui/common/Portfolio';
+import { useEffect, useState } from 'react';
+import { PortfoliosProps } from '@/types/portfolio/portfolio';
 
 export default function Home() {
+  const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
+  const numberOfPortfolio = 3;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/portfolio/api?number=${numberOfPortfolio}`, {
+          cache: 'no-store',
+          method: 'GET',
+        });
+        const data = await res.json();
+        setPortfolios(data);
+      } catch (err) {
+        console.error('Error fetching portfolios:', err);
+      }
+    };
+    fetchData();
+  }, [numberOfPortfolio]);
   return (
     <main>
       <div className="flex">
@@ -30,7 +50,7 @@ export default function Home() {
         <div className="mb-10">
           <SectionTittle title="Portfolio" subtile="Here is latest portfolio" />
         </div>
-        <Portfolio numberOfPortfolio={3} />
+        <Portfolio portfolios={portfolios} />
       </div>
     </main>
   );
