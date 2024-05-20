@@ -30,7 +30,7 @@ export const hero = {
         alt: 'linkedin icon',
         width: 48,
         height: 48,
-        href: 'www.linkedin.com/in/紀章-田村-a2b335237',
+        href: 'https://www.linkedin.com/in/sho-developer/',
       },
       {
         src: '/assets/snsIcons/instagram.png',

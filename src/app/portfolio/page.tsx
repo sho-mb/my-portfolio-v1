@@ -1,13 +1,32 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { HeroSection } from '../ui/common/HeroSection';
-import { hero } from '../../types/portfolio/portfolio';
+import { PortfoliosProps, hero } from '../../types/portfolio/portfolio';
 import { Portfolio } from '../ui/common/Portfolio';
 
-export default function page() {
+export default function Page() {
+  const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
+  const numberOfPortfolio = '';
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/portfolio/api?number=${numberOfPortfolio}`, {
+          cache: 'no-store',
+          method: 'GET',
+        });
+        const data = await res.json();
+        setPortfolios(data);
+      } catch (err) {
+        console.error('Error fetching portfolios:', err);
+      }
+    };
+    fetchData();
+  }, [numberOfPortfolio]);
+
   return (
     <main>
       <HeroSection hero={hero} />
-      <Portfolio />
+      <Portfolio portfolios={portfolios} />
     </main>
   );
 }
