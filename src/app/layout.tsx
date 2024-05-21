@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <Theme>
-          <Container size={'3'}>
+          <Container size={'3'} className="px-4 md:px-0">
             <Header></Header>
             {children}
             <Footer></Footer>

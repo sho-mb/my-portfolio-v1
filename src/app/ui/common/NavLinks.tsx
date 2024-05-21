@@ -8,7 +8,7 @@ export const NavLinks = () => {
       {links.map((link) => {
         return (
           <Link key={link.link} href={link.href} className="hover:text-blue-800">
-            <p>{link.link}</p>
+            <p className="mb-8 md:mb-0">{link.link}</p>
           </Link>
         );
       })}
