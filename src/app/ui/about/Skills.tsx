@@ -20,12 +20,12 @@ interface skillProps {
 
 export const Skills: React.FC<skillProps> = ({ skills }) => {
   return (
-    <div className="flex">
+    <div className="md:flex">
       {skills.map((item) => {
         const images = item.images;
         const skill = item.skill;
         return (
-          <div key={item.skill.title} className="w-[50%]">
+          <div key={item.skill.title} className="md:w-[50%] mb-10">
             <div className="flex gap-4 mb-4">
               {images.map((logo) => {
                 return (

@@ -49,8 +49,8 @@ export const ContactForm = () => {
           )}
         </div>
       </div>
-      <div className="flex justify-between">
-        <div className="w-[48%]">
+      <div className="md:flex justify-between">
+        <div className="md:w-[48%]">
           <Grid gap={'1'} className="mb-4">
             <Text as="div" weight="bold" size="2" mb="1">
               Name
@@ -90,7 +90,7 @@ export const ContactForm = () => {
             </div>
           </Grid>
         </div>
-        <Grid gap="1" className="w-[48%]">
+        <Grid gap="1" className="md:w-[48%] mt-5 md:mt-0">
           <Text as="div" weight="bold" size="2" mb="1">
             Message
           </Text>

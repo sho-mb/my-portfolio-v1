@@ -30,11 +30,11 @@ export const HeroSection = (props: titleProps) => {
   const image = props.hero.image;
   return (
     <>
-      <div className="flex">
-        <div className="w-[50%]">
+      <div className="md:flex">
+        <div className="md:w-[50%]">
           <HeroTitle heroTitle={props.hero.heroTitle} />
         </div>
-        <div className="w-[50%]">
+        <div className="md:w-[50%]">
           <Image src={image.src} alt={image.alt} height={image.height} width={image.width} />
         </div>
       </div>
