@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { Portfolio } from '../ui/common/Portfolio';
 import Link from 'next/link';
 import { PortfoliosProps } from '@/types/portfolio/portfolio';
+import { PortfolioSwiper } from '../ui/common/PortfolioSwiper';
 
 export default function Page() {
   const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
@@ -32,7 +33,7 @@ export default function Page() {
   return (
     <main>
       <HeroSection hero={hero} />
-      <section className="my-20">
+      <section className="mt-4 md:my-20 md:mt-0">
         <div className="pb-5">
           <div className="mb-5">
             <SectionTittle
@@ -40,7 +41,7 @@ export default function Page() {
               subtile={sectionTitles.skills.subTitle}
             />
           </div>
-          <p className="pb-20">
+          <p className="pb-12 md:pb-20 text-center md:text-left">
             Always bring a satisfy results to clients and commit to it. <br /> Help your business
             with my solution together.
           </p>
@@ -56,11 +57,11 @@ export default function Page() {
               subtile={sectionTitles.random.subTitle}
             />
           </div>
-          <div className="flex">
-            <div className="w-[50%]">
+          <div className="md:flex">
+            <div className="md:w-[50%]">
               <Image src="/assets/meIllust.png" alt="sho illustlation" height={320} width={320} />
             </div>
-            <div className="w-[50%]">
+            <div className="md:w-[50%]">
               <h3 className="font-semibold text-xl">Fact about me</h3>
               <p className="mt-5">
                 Gym is my best partner <br />
@@ -100,7 +101,12 @@ export default function Page() {
             subtile={sectionTitles.portfolio.subTitle}
           />
         </div>
-        <Portfolio portfolios={portfolios} />
+        <div className="hidden md:block">
+          <Portfolio portfolios={portfolios} />
+        </div>
+        <div className="md:hidden">
+          <PortfolioSwiper portfolios={portfolios} />
+        </div>
         <Separator my="3" size="4" />
       </section>
       <section className="my-20 text-center">

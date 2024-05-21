@@ -5,6 +5,7 @@ import { SectionTittle } from './ui/common/SectionTittle';
 import { Portfolio } from './ui/common/Portfolio';
 import { useEffect, useState } from 'react';
 import { PortfoliosProps } from '@/types/portfolio/portfolio';
+import { PortfolioSwiper } from './ui/common/PortfolioSwiper';
 
 export default function Home() {
   const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
@@ -28,7 +29,7 @@ export default function Home() {
     <main>
       <div className="flex">
         <div className="w-1/2 my-auto">
-          <h1 className={`${andada.className} text-2xl font-semibold`}>
+          <h1 className={`${andada.className} text-xl md:text-2xl font-semibold`}>
             Hi I’m sho! <br />
             Web designer and <br />
             Frontend developer <br />
@@ -50,7 +51,12 @@ export default function Home() {
         <div className="mb-10">
           <SectionTittle title="Portfolio" subtile="Here is latest portfolio" />
         </div>
-        <Portfolio portfolios={portfolios} />
+        <div className="hidden md:block">
+          <Portfolio portfolios={portfolios} />
+        </div>
+        <div className="md:hidden">
+          <PortfolioSwiper portfolios={portfolios} />
+        </div>
       </div>
     </main>
   );
