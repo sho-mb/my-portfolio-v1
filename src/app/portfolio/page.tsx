@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { HeroSection } from '../ui/common/HeroSection';
 import { PortfoliosProps, hero } from '../../types/portfolio/portfolio';
 import { Portfolio } from '../ui/common/Portfolio';
+import { PortfolioSwiper } from '../ui/common/PortfolioSwiper';
 
 export default function Page() {
   const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
@@ -26,7 +27,12 @@ export default function Page() {
   return (
     <main>
       <HeroSection hero={hero} />
-      <Portfolio portfolios={portfolios} />
+      <div className="hidden md:block">
+        <Portfolio portfolios={portfolios} />
+      </div>
+      <div className="md:hidden">
+        <PortfolioSwiper portfolios={portfolios} />
+      </div>
     </main>
   );
 }

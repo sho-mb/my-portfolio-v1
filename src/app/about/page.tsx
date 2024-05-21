@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { Portfolio } from '../ui/common/Portfolio';
 import Link from 'next/link';
 import { PortfoliosProps } from '@/types/portfolio/portfolio';
+import { PortfolioSwiper } from '../ui/common/PortfolioSwiper';
 
 export default function Page() {
   const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
@@ -100,7 +101,12 @@ export default function Page() {
             subtile={sectionTitles.portfolio.subTitle}
           />
         </div>
-        <Portfolio portfolios={portfolios} />
+        <div className="hidden md:block">
+          <Portfolio portfolios={portfolios} />
+        </div>
+        <div className="md:hidden">
+          <PortfolioSwiper portfolios={portfolios} />
+        </div>
         <Separator my="3" size="4" />
       </section>
       <section className="my-20 text-center">
