@@ -14,7 +14,6 @@ const fetchData = async (id: number) => {
   });
   if (res.ok) {
     const data = await res.json();
-    console.log(data);
     return data;
   }
 
@@ -57,7 +56,7 @@ export const PortfolioDetail = (props: detailProps) => {
           <div className="w-full h-[500px] overflow-hidden relative">
             <Image
               unoptimized={true}
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'contain' }}
               fill={true}
               src={detail.image.src}
               alt={detail.image.alt}

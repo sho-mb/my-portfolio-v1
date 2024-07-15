@@ -51,7 +51,7 @@ export const PortfolioForm = () => {
         <Text as="div" weight="bold" size="2" mb="1">
           Content
         </Text>
-        <TextArea size="3" placeholder="content" name="content" />
+        <TextArea resize="vertical" size="3" placeholder="content" name="content" />
       </Grid>
       <Grid gap={'1'}>
         <Text as="div" weight="bold" size="2" mb="1">
