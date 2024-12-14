@@ -1,8 +1,9 @@
 'use client';
 
 import { PortfoliosProps } from '@/types/portfolio/portfolio';
-import { Checkbox, Table } from '@radix-ui/themes';
+import { Button, Checkbox, Table } from '@radix-ui/themes';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Props = {
@@ -22,6 +23,7 @@ const fetchData = async () => {
 export const PortfolioTable: React.FC<Props> = ({ onChildChecked, onDeleteSuccess }) => {
   const [portfolios, setPortfolios] = useState<PortfoliosProps[]>([]);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (onDeleteSuccess) {
@@ -37,6 +39,10 @@ export const PortfolioTable: React.FC<Props> = ({ onChildChecked, onDeleteSucces
     onChildChecked(id);
   };
 
+  const editPortfolio = (id: number) => {
+    router.push(`/admin/dashboard/edit/${id}`);
+  };
+
   return (
     <Table.Root>
       <Table.Header>
@@ -45,6 +51,7 @@ export const PortfolioTable: React.FC<Props> = ({ onChildChecked, onDeleteSucces
           <Table.ColumnHeaderCell width="120px">Project Title</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell width="120px">Image Url</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Content</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell width="20px">Edit</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -76,6 +83,9 @@ export const PortfolioTable: React.FC<Props> = ({ onChildChecked, onDeleteSucces
                 ) : (
                   <span onClick={() => setExpandedId(null)}>{portfolio.portfolio.content}</span>
                 )}
+              </Table.Cell>
+              <Table.Cell>
+                <Button onClick={() => editPortfolio(portfolio.portfolio.id)}>Edit</Button>
               </Table.Cell>
             </Table.Row>
           );
